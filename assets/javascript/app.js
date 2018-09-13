@@ -42,5 +42,14 @@ var game = {
                 $('#subwrapper').append("<input type='radio' name='question-"+i+"' value='"+questions[i].answers[j]+"'>"+questions[i].answers[j])
             }
         }   
+    },
+    done: function(){
+        $.each($('input[name="question-0]":checked'),function(){
+            if($(this).val()==questions[1].correctAnswer){
+                game.correct++;
+            } else{
+                game.incorrect++;
+            }
+        })
     }
 }
