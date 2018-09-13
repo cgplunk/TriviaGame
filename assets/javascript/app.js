@@ -2,6 +2,10 @@ $('#start').on('click',function(){
     game.start();
 })
 
+$(document).on('click','#end',function(){
+    game.done();
+})
+
 var questions =[{
     question:"Which company makes the les paul guitar model?",
     answers: ["Fender","Ibanez","Gretsch","Gibson"],
@@ -23,7 +27,7 @@ var questions =[{
 var game = {
     correct: 0,
     incorrect: 0,
-    counter: 120,
+    counter: 60,
     countdown: function(){
         game.counter--;
         $('#counter').html(game.counter);
@@ -41,15 +45,48 @@ var game = {
             for(var j=0;j<questions[i].answers.length;j++){
                 $('#subwrapper').append("<input type='radio' name='question-"+i+"' value='"+questions[i].answers[j]+"'>"+questions[i].answers[j])
             }
-        }   
+        }
+        $('#subwrapper').append('<br><button id="end">Done</button>'); 
     },
     done: function(){
-        $.each($('input[name="question-0]":checked'),function(){
+        $.each($("input[name='question-0']:checked"),function(){
+            if($(this).val()==questions[0].correctAnswer){
+                game.correct++;
+            } else{
+                game.incorrect++;
+            }
+        });
+        $.each($("input[name='question-1']:checked"),function(){
             if($(this).val()==questions[1].correctAnswer){
                 game.correct++;
             } else{
                 game.incorrect++;
             }
-        })
+        });
+        $.each($("input[name='question-2']:checked"),function(){
+            if($(this).val()==questions[2].correctAnswer){
+                game.correct++;
+            } else{
+                game.incorrect++;
+            }
+        });
+        $.each($("input[name='question-3']:checked"),function(){
+            if($(this).val()==questions[3].correctAnswer){
+                game.correct++;
+            } else{
+                game.incorrect++;
+            }
+        });
+
+        this.result();
+        },
+        result: function(){
+            clearInterval(timer);
+            $('#subwrapper h2').remove();
+
+            $('#subwrapper').html("<h2>All done.</h2>");
+            $('#subwrapper').append("<h3>Correct Answers: "+this.correct+"</h3>");
+            $('#subwrapper').append("<h3>Incorrect Answers: "+this.incorrect+"</h3>");
+            $('#subwrapper').append("<h3>Unanswered: "+(questions.length-(this.incorrect+this.correct))+"</h3>");
     }
 }
